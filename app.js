@@ -37,7 +37,8 @@ app.post('/webhook', verifyGithubSignature, (req, res) => {
         exec('git pull && npm install && npm run build', (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error executing build: ${error}`);
-                return res.status(500).send('Internal Server Error');
+                console.error(stderr);
+                return res.status(500).send(`Internal Server Error: ${error.message}`);
             }
             console.log(`Build output: ${stdout}`);
             res.status(200).send('Build completed');

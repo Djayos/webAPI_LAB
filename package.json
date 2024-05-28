@@ -1,17 +1,16 @@
 {
   "name": "webhook-listener",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "A simple webhook listener for GitHub",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "build": "echo 'Running build script...'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2"
+    "body-parser": "^1.19.0",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1"
   }
 }
+
