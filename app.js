@@ -9,6 +9,12 @@ const secretKey = 'teubner';
 
 app.use(bodyParser.json());
 
+// Middleware pour loguer toutes les requêtes
+app.use((req, res, next) => {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    next();
+});
+
 function verifyGithubSignature(req, res, next) {
     const signature = req.headers['x-hub-signature-256'];
     const payload = JSON.stringify(req.body);
