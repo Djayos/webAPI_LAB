@@ -33,7 +33,7 @@ app.post('/webhook', verifyGithubSignature, (req, res) => {
     const event = req.body;
     console.log('Received event:', event);
 
-    if (event.ref === 'refs/heads/main') {  // assuming you are interested in changes on 'main' branch
+    if (event.ref === 'refs/heads/main') {
         exec('git pull && npm install && npm run build', (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error executing build: ${error}`);
