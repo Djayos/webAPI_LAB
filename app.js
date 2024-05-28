@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { exec } = require('child_process');
 
 const app = express();
@@ -8,22 +8,6 @@ const PORT = 3000;
 const secretKey = 'teubner';
 
 app.use(bodyParser.json());
-
-function verifyToken(req, res, next) {
-    const token = req.headers['x-hub-signature-256'];
-    if (!token) {
-        return res.status(403).json({ message: 'No token provided' });
-    }
-    jwt.verify(token, secretKey, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: 'Failed to authenticate token' });
-        }
-        req.user = decoded;
-        next();
-    });
-}
-
-const crypto = require('crypto');
 
 function verifyGithubSignature(req, res, next) {
     const signature = req.headers['x-hub-signature-256'];
@@ -34,12 +18,12 @@ function verifyGithubSignature(req, res, next) {
     if (signature === digest) {
         return next();
     } else {
+        console.log('Invalid signature');
         return res.status(401).send('Invalid signature');
     }
 }
 
-
-app.post('/webhook', verifyToken, (req, res) => {
+app.post('/webhook', verifyGithubSignature, (req, res) => {
     const event = req.body;
     console.log('Received event:', event);
 
